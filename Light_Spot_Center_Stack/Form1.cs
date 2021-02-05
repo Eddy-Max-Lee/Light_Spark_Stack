@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ namespace Light_Spot_Center_Stack
     public partial class Form1 : Form
     {
          private static Dictionary<string, Bitmap> DICT_BMP= new Dictionary<string, Bitmap>();
+        private static Bitmap STACKED;
+
 
         public Form1()
         {
@@ -63,36 +66,40 @@ namespace Light_Spot_Center_Stack
                     }
                 }
             }
-            //2. 畫圓心
-            foreach (KeyValuePair<string, Bitmap> pair in dict)
-            {
-                Bitmap ori_bmp = new Bitmap(pair.Value.Width, pair.Value.Height);
-                string ori_name = pair.Key;
-                ori_bmp = pair.Value;
-
-                char sp0 = '(';
-                char sp2 = ')';
-                char sp3 = '_';
-
-                string center_string = ori_name.Split(sp0)[1].Split(sp2)[0];//()誇號中間的串
-                int centerX = Convert.ToInt32(center_string.Split(sp3)[0]);
-                int centerY = Convert.ToInt32(center_string.Split(sp3)[1]);
-                int thick = 5;
-               
-
-                for (int Pixel_x = 0; Pixel_x < ori_bmp.Width; Pixel_x++)
+            //2. 畫圓心 格式對才能畫
+            if (checkBox1.Checked) {
+                foreach (KeyValuePair<string, Bitmap> pair in dict)
                 {
-                    for (int Pixel_y = 0; Pixel_y < ori_bmp.Height; Pixel_y++)
+                    Bitmap ori_bmp = new Bitmap(pair.Value.Width, pair.Value.Height);
+                    string ori_name = pair.Key;
+                    ori_bmp = pair.Value;
+
+                    char sp0 = '(';
+                    char sp2 = ')';
+                    char sp3 = '_';
+
+                    string center_string = ori_name.Split(sp0)[1].Split(sp2)[0];//()誇號中間的串
+                    int centerX = Convert.ToInt32(center_string.Split(sp3)[0]);
+                    int centerY = Convert.ToInt32(center_string.Split(sp3)[1]);
+                    int thick = 5;
+
+
+                    for (int Pixel_x = 0; Pixel_x < ori_bmp.Width; Pixel_x++)
                     {
-                        if (Math.Abs(Pixel_x - centerX)< thick && Math.Abs(Pixel_y - centerY) < thick)
-                        {                  
-                            R_stacking[Pixel_x, Pixel_y] = 255;
-                            G_stacking[Pixel_x, Pixel_y] = 0;
-                            B_stacking[Pixel_x, Pixel_y] = 0;
-                        } 
+                        for (int Pixel_y = 0; Pixel_y < ori_bmp.Height; Pixel_y++)
+                        {
+                            if (Math.Abs(Pixel_x - centerX) < thick && Math.Abs(Pixel_y - centerY) < thick)
+                            {
+                                R_stacking[Pixel_x, Pixel_y] = 255;
+                                G_stacking[Pixel_x, Pixel_y] = 0;
+                                B_stacking[Pixel_x, Pixel_y] = 0;
+                            }
+                        }
                     }
                 }
+
             }
+         
 
             //3. 將疊圖的值存入stack
             for (int Pixel_x = 0; Pixel_x < first.Value.Width; Pixel_x++)//一直是0->input_image.Width
@@ -155,6 +162,7 @@ namespace Light_Spot_Center_Stack
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
+            cb_list.Items.Clear();
 
             if (e.KeyCode == Keys.Enter)
             {
@@ -165,10 +173,19 @@ namespace Light_Spot_Center_Stack
                 StringBuilder sb = new StringBuilder();
                 foreach (FileInfo file in files)
                 {
-                  //  if (file.Name.Contains("stamped.bmp"))  
+                    if (checkBox1.Checked)
+                    {
+                        if (file.Name.Contains(")_stamped.bmp"))
+                            cb_list.Items.Add(file.Name);
+                    }
+                    else {
                         cb_list.Items.Add(file.Name);
+                    }
+
                 }
-               // textBox1.KeyDown += btn_stack_Click;
+                // textBox1.KeyDown += btn_stack_Click;
+
+                cb_list.Text = "已選取路徑"+ textBox1.Text;
             }
         }
 
@@ -188,7 +205,33 @@ namespace Light_Spot_Center_Stack
                 //Thread.Sleep(500);
             }
 
-            pbx_.Image = StackBitmap(DICT_BMP);
+            STACKED = StackBitmap(DICT_BMP);
+            pbx_.Image = STACKED;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+          dialog.FileName = "Name" + ".bmp";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                int width = Convert.ToInt32(pbx_.Width);
+                int height = Convert.ToInt32(pbx_.Height);
+                Bitmap bmp = new Bitmap(width, height);
+              //  pbx_.DrawToBitmap(bmp, new Rectangle(0, 0, width, height));
+                bmp = (Bitmap)pbx_.Image;
+                STACKED.Save(dialog.FileName, ImageFormat.Bmp);
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }

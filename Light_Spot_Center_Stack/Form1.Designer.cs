@@ -35,6 +35,8 @@
             this.cb_list = new System.Windows.Forms.ComboBox();
             this.btn_load = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btn_save = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbx_)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -72,9 +74,11 @@
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.btn_stack, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.cb_list, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.btn_load, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.textBox1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btn_save, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.cb_list, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.btn_load, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.checkBox1, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -104,16 +108,19 @@
             // 
             // cb_list
             // 
+            this.cb_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cb_list.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.cb_list.FormattingEnabled = true;
-            this.cb_list.Location = new System.Drawing.Point(3, 121);
+            this.cb_list.Location = new System.Drawing.Point(3, 239);
             this.cb_list.Name = "cb_list";
-            this.cb_list.Size = new System.Drawing.Size(402, 23);
+            this.cb_list.Size = new System.Drawing.Size(402, 28);
             this.cb_list.TabIndex = 1;
             // 
             // btn_load
             // 
             this.btn_load.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_load.Location = new System.Drawing.Point(3, 62);
+            this.btn_load.Enabled = false;
+            this.btn_load.Location = new System.Drawing.Point(3, 121);
             this.btn_load.Name = "btn_load";
             this.btn_load.Size = new System.Drawing.Size(402, 53);
             this.btn_load.TabIndex = 0;
@@ -124,13 +131,40 @@
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBox1.Location = new System.Drawing.Point(3, 3);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(402, 25);
+            this.textBox1.Size = new System.Drawing.Size(402, 31);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "請輸入目標資料夾";
+            this.textBox1.Text = "請貼上目標資料夾，並Enter";
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.textBox1_MouseDown);
+            // 
+            // btn_save
+            // 
+            this.btn_save.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_save.Location = new System.Drawing.Point(3, 298);
+            this.btn_save.Name = "btn_save";
+            this.btn_save.Size = new System.Drawing.Size(402, 53);
+            this.btn_save.TabIndex = 4;
+            this.btn_save.Text = "儲存疊圖";
+            this.btn_save.UseVisualStyleBackColor = true;
+            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox1.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.checkBox1.Location = new System.Drawing.Point(3, 62);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(402, 53);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Text = "讀檔時限制格式";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Form1
             // 
@@ -140,6 +174,8 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Light Spot Center Stack";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbx_)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -157,6 +193,8 @@
         private System.Windows.Forms.ComboBox cb_list;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button btn_stack;
+        private System.Windows.Forms.Button btn_save;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 
